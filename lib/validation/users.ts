@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-function UserSchemaValidation(user: any) {
+function AddUserSchemaValidation(user: any) {
     return {
         username: Yup.string()
             .required('Username is required'),
@@ -20,6 +20,20 @@ function UserSchemaValidation(user: any) {
                 }
                 return true; // Return true if user has a value
             }),
+    }
+}
+
+function EditUserSchemaValidation() {
+    return {
+        username: Yup.string()
+            .required('Username is required'),
+
+        email: Yup.string()
+            .email('Please enter a valid email address')
+            .required('Email is required'),
+
+        name: Yup.string()
+            .required('Name is required'),
     }
 }
 
@@ -48,8 +62,12 @@ function LoginSchemaValidation() {
     }
 }
 
-function ValidationSchema(user: any) {
-    return Yup.object().shape(UserSchemaValidation(user));
+function AddValidationSchema(user: any) {
+    return Yup.object().shape(AddUserSchemaValidation(user));
+}
+
+function EditValidationSchema() {
+    return Yup.object().shape(EditUserSchemaValidation());
 }
 
 function LoginValidationSchema() {
@@ -62,7 +80,8 @@ function RegisterValidationSchema() {
 
 
 export const UserValidation = {
-    User: ValidationSchema,
+    AddUser: AddValidationSchema,
+    EditUser: EditValidationSchema,
     Login: LoginValidationSchema,
     Register: RegisterValidationSchema
 }
