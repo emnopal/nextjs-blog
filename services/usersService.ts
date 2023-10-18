@@ -8,7 +8,7 @@ import { alertHelper } from '@/lib/helper/alert';
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl.v1}/users`;
 
-const userSubject = new BehaviorSubject(typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user')));
+const userSubject = new BehaviorSubject(typeof window !== 'undefined' && JSON.parse(localStorage.getItem('user') as string));
 
 async function login(username: string, password: string) {
     const user = await fetchWrapper.POST(`${baseUrl}/authenticate`, { username, password });
