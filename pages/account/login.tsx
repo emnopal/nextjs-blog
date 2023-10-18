@@ -39,16 +39,16 @@ export default function Login() {
     return (
         <Layout>
             <div className="card">
-                <h4 className="card-header" style={{color: 'black'}}>Login</h4>
+                <h4 className="card-header" >Login</h4>
                 <div className="card-body">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-3">
-                            <label className="form-label" style={{color: 'black'}}>Username</label>
+                            <label className="form-label" >Username</label>
                             <input type="text" {...register('username')} className={`form-control ${errors.username ? 'is-invalid' : ''}`} />
                             <div className="invalid-feedback">{errors.username?.message}</div>
                         </div>
                         <div className="mb-3">
-                            <label className="form-label" style={{color: 'black'}}>Password</label>
+                            <label className="form-label" >Password</label>
                             <input type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
                             <div className="invalid-feedback">{errors.password?.message}</div>
                         </div>

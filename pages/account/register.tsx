@@ -28,26 +28,26 @@ export default function Register() {
     return (
         <Layout>
             <div className="card">
-                <h4 className="card-header" style={{color: 'black'}}>Register</h4>
+                <h4 className="card-header" >Register</h4>
                 <div className="card-body">
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <div className="mb-3">
-                            <label className="form-label" style={{color: 'black'}}>Name</label>
+                            <label className="form-label" >Name</label>
                             <input type="text" {...register('name')} className={`form-control ${errors.name ? 'is-invalid' : ''}`} />
                             <div className="invalid-feedback">{errors.name?.message}</div>
                         </div>
                         <div className="mb-3">
-                            <label className="form-label" style={{color: 'black'}}>Email</label>
+                            <label className="form-label" >Email</label>
                             <input type="text" {...register('email')} className={`form-control ${errors.email ? 'is-invalid' : ''}`} />
                             <div className="invalid-feedback">{errors.email?.message}</div>
                         </div>
                         <div className="mb-3">
-                            <label className="form-label" style={{color: 'black'}}>Username</label>
+                            <label className="form-label" >Username</label>
                             <input type="text" {...register('username')} className={`form-control ${errors.username ? 'is-invalid' : ''}`} />
                             <div className="invalid-feedback">{errors.username?.message}</div>
                         </div>
                         <div className="mb-3">
-                            <label className="form-label" style={{color: 'black'}}>Password</label>
+                            <label className="form-label" >Password</label>
                             <input type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
                             <div className="invalid-feedback">{errors.password?.message}</div>
                         </div>
