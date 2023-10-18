@@ -105,3 +105,7 @@ a {
     color-scheme: dark;
   }
 }
+
+.app-container {
+  min-height: 350px;
+}

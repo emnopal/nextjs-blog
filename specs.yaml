@@ -1,0 +1,21 @@
+pages:
+  - /account/login
+  - /account/register
+  - $/
+  - $/users
+  - $/users/add
+  - $/users/edit/[id]
+  # - $/profile
+
+pages/api/v1:
+  - POST /users/authenticate
+  - POST /users/register
+  - GET $/users
+  - GET, PUT, DELETE $/users[id]
+
+middleware:
+- authCheck()
+
+notes:
+  - / => unprotected
+  - $/ => protected
