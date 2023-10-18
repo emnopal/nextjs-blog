@@ -64,10 +64,7 @@ async function create(params: any): Promise<void> {
 	const user = new User(params)
 
 	if (params.password) {
-		user.password = bcrypt.hashSync(
-			params.password,
-			10,
-		)
+		user.password = bcrypt.hashSync(params.password, 10)
 	}
 
 	await user.save()
@@ -82,13 +79,6 @@ async function update(id: string, params: any): Promise<void> {
 		(await User.findOne({ username: params.username }))
 	) {
 		throw 'Username "' + params.username + '" is already taken'
-	}
-
-	if (params.password) {
-		params.password = bcrypt.hashSync(
-			params.password,
-			10,
-		)
 	}
 
 	Object.assign(user, params)
