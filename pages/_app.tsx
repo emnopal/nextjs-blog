@@ -7,7 +7,7 @@ import '@/styles/globals.css';
 import { userService } from '@/services/usersService';
 import { Nav } from '@/components/Nav';
 import { Alert } from '@/components/Alert';
-
+import { Footer } from '@/components/Footer';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -18,9 +18,13 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
 
     function authCheck(url: string) {
+
       setUser(userService.userValue);
+
       const publicPaths = ['/account/login', '/account/register'];
+
       const path = url.split('?')[0];
+
       if (!userService.userValue && !publicPaths.includes(path)) {
         setAuthorized(false);
         router.push({
@@ -30,7 +34,9 @@ export default function App({ Component, pageProps }: AppProps) {
       } else {
         setAuthorized(true);
       }
+
     }
+
     authCheck(asPath);
 
     const hideContent = () => setAuthorized(false);
@@ -42,6 +48,7 @@ export default function App({ Component, pageProps }: AppProps) {
       events.off('routeChangeStart', hideContent);
       events.off('routeChangeComplete', authCheck);
     }
+
   }, [router, asPath, events]);
 
   return (
@@ -56,6 +63,7 @@ export default function App({ Component, pageProps }: AppProps) {
         {authorized &&
           <Component {...pageProps} />
         }
+        <Footer />
       </div>
     </>
   );
