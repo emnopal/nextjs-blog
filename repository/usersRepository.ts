@@ -66,7 +66,7 @@ async function create(params: any): Promise<void> {
 	if (params.password) {
 		user.password = bcrypt.hashSync(
 			params.password,
-			serverRuntimeConfig.saltLength,
+			10,
 		)
 	}
 
@@ -87,7 +87,7 @@ async function update(id: string, params: any): Promise<void> {
 	if (params.password) {
 		params.password = bcrypt.hashSync(
 			params.password,
-			serverRuntimeConfig.saltLength,
+			10,
 		)
 	}
 
