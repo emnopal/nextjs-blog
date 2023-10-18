@@ -9,11 +9,11 @@ import { UserValidation } from '@/lib/validation/users';
 
 
 
-export function AddEdit(props: any) {
+export function EditUser(props: any) {
     const user = props?.user;
     const router = useRouter();
 
-    const validationSchema = UserValidation.User(user)
+    const validationSchema = UserValidation.EditUser()
     const formOptions = { resolver: yupResolver(validationSchema) } as any;
 
     // set default form values if in edit mode
@@ -29,18 +29,12 @@ export function AddEdit(props: any) {
         alertHelper.clear();
         try {
             let message;
-            if (user) {
-                await userService.update(user.id, data);
-                message = 'User updated';
-            } else {
-                await userService.register(data);
-                message = 'User added';
-            }
+            await userService.update(user.id, data);
+            message = 'User updated';
             router.push('/users');
             alertHelper.success(message, true);
         } catch (error) {
             alertHelper.error(error as string);
-            console.error(error);
         }
     }
 
@@ -63,14 +57,6 @@ export function AddEdit(props: any) {
                     <label className="form-label">Username</label>
                     <input type="text" {...register('username')} className={`form-control ${errors.username ? 'is-invalid' : ''}`} />
                     <div className="invalid-feedback">{errors.username?.message?.toString()}</div>
-                </div>
-                <div className="mb-3 col">
-                    <label className="form-label">
-                        Password
-                        {user && <em className="ms-1">(Leave blank to keep the same password)</em>}
-                    </label>
-                    <input type="password" {...register('password')} className={`form-control ${errors.password ? 'is-invalid' : ''}`} />
-                    <div className="invalid-feedback">{errors.password?.message?.toString()}</div>
                 </div>
             </div>
             <div className="mb-3">
