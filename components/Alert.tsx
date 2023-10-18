@@ -18,8 +18,6 @@ export function Alert() {
 
     if (!alert) return null;
 
-    console.log(alert)
-
     return (
         <div className="container">
             <div className="m-3">
