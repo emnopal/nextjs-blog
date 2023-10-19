@@ -1,9 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { apiHandler } from '@/lib/handler/handler';
 import { usersRepository } from '@/repository/usersRepository';
+import { getMongoDb } from '@/lib/config/mongo';
 
 async function getAll(req: NextApiRequest, res: NextApiResponse) {
-    const users = await usersRepository.getAll();
+    const db = await getMongoDb()
+    const users = await usersRepository.getAll(db);
     return res.status(200).json(users);
 }
 
