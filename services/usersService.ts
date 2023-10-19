@@ -4,6 +4,7 @@ import Router from 'next/router';
 
 import { fetchWrapper } from '@/lib/api/fetch';
 import { alertHelper } from '@/lib/helper/alert';
+import { ICurrentAuthUserModel } from '../repository/usersRepository';
 
 const { publicRuntimeConfig } = getConfig();
 const baseUrl = `${publicRuntimeConfig.apiUrl.v1}/users`;
@@ -57,7 +58,7 @@ async function _delete(id: string) {
 
 export const userService = {
     user: userSubject.asObservable(),
-    get userValue() { return userSubject.value },
+    get userValue(): ICurrentAuthUserModel { return userSubject.value },
     login,
     logout,
     register,
