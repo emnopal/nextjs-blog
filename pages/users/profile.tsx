@@ -7,24 +7,25 @@ import { Spinner } from '@/components/Spinner';
 import { alertHelper } from '@/lib/helper/alert';
 import { userService } from '@/services/usersService';
 import { stringHelper } from '@/lib/helper/stringHelper';
+import { IUserModel } from '@/repository/usersRepository';
 
 
 export default function Edit() {
 
     const router = useRouter();
     const { query } = router;
-    const [user, setUser] = useState();
-    const [isDisabled, setIsDisabled] = useState(true);
+    const [user, setUser] = useState<IUserModel | null>(null);
+    const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
     useEffect(() => {
-        const id = userService.userValue?.id
+        const id = userService.userValue?._id
         const { enable_edit } = query;
         if (!id) return;
 
         if (enable_edit) setIsDisabled(false)
 
         // fetch user and set default form values if in edit mode
-        userService.getById(id as string)
+        userService.getById(id)
             .then(x => setUser(x))
             .catch(alertHelper.error)
     }, [query]);

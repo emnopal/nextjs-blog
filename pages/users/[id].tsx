@@ -7,13 +7,14 @@ import { Spinner } from '@/components/Spinner';
 import { alertHelper } from '@/lib/helper/alert';
 import { userService } from '@/services/usersService';
 import { stringHelper } from '@/lib/helper/stringHelper';
+import { type IUserModel } from '@/repository/usersRepository';
 
 
 export default function Edit() {
 
     const router = useRouter();
     const { query } = router;
-    const [user, setUser] = useState();
+    const [user, setUser] = useState<IUserModel | null>(null);
     const [isDisabled, setIsDisabled] = useState(true);
 
     useEffect(() => {
@@ -29,6 +30,8 @@ export default function Edit() {
     }, [query]);
 
     const usernameStr = user?.username ?? ''
+
+    // todo: implement profile
     const origNameStr = user?.name ?? ''
     const nameStr = stringHelper.toTitleCase(origNameStr)
 
