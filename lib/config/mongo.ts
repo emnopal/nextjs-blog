@@ -1,19 +1,27 @@
-import getConfig from 'next/config';
-import mongoose from 'mongoose';
-import { userModel } from '@/models/usersModel';
+import { MongoClient } from 'mongodb'
 
-const { serverRuntimeConfig } = getConfig();
-
-try {
-    mongoose.connect(serverRuntimeConfig.connectionString);
-    mongoose.Promise = global.Promise;
-
-    const connection = mongoose.connection;
-} catch (error: unknown) {
-    console.error("something went wrong");
-    console.error(error as Error);
+declare global {
+	namespace globalThis {
+		var mongoClientPromise: Promise<MongoClient>
+	}
 }
 
-export const mongodb = {
-    User: userModel()
-};
+export async function getMongoClient() {
+	/**
+	 * Global is used here to maintain a cached connection across hot reloads
+	 * in development. This prevents connections growing exponentiatlly
+	 * during API Route usage.
+	 * https://github.com/vercel/next.js/pull/17666
+	 */
+	if (!global.mongoClientPromise) {
+		const client = new MongoClient(process.env.MONGODB_URI as string)
+		// client.connect() returns an instance of MongoClient when resolved
+		global.mongoClientPromise = client.connect()
+	}
+	return global.mongoClientPromise
+}
+
+export async function getMongoDb() {
+	const mongoClient = await getMongoClient()
+	return mongoClient.db()
+}
