@@ -18,10 +18,10 @@ async function getById(req: NextApiRequest, res: NextApiResponse) {
 async function update(req: NextApiRequest, res: NextApiResponse) {
 	const db = await getMongoDb()
 
-	const { id } = req.query
+	const { _id, ...body } = req.body
 
-	if (id) {
-		await usersRepository.update(db, id as string, req.body)
+	if (_id) {
+		await usersRepository.update(db, _id as string, body)
 		return res.status(200).json({})
 	}
 }
