@@ -8,11 +8,12 @@ import { userService } from '@/services/usersService';
 import { Nav } from '@/components/Nav';
 import { Alert } from '@/components/Alert';
 import { Footer } from '@/components/Footer';
+import { ICurrentAuthUserModel } from '@/repository/usersRepository';
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   const { asPath, events } = router;
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState<ICurrentAuthUserModel | null>(null);
   const [authorized, setAuthorized] = useState(false);
 
   useEffect(() => {
