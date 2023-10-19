@@ -29,20 +29,22 @@ export default function Index() {
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th style={{ width: '30%' }}>First Name</th>
-                        <th style={{ width: '30%' }}>Last Name</th>
+                        <th style={{ width: '30%' }}>Name</th>
                         <th style={{ width: '30%' }}>Username</th>
+                        <th style={{ width: '30%' }}>Email</th>
                         <th style={{ width: '10%' }}></th>
                     </tr>
                 </thead>
                 <tbody>
                     {users && users.map((user: any) =>
                         <tr key={user.id}>
-                            <td>{user.name}</td>
+                            <td>
+                                <Link href={`/users/${user.id}`}>{user.name}</Link>
+                            </td>
                             <td>{user.username}</td>
                             <td>{user.email}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
-                                <Link href={`/users/edit/${user.id}`} className="btn btn-sm btn-primary me-1">Edit</Link>
+                                <Link href={`/users/${user.id}?enable_edit=true`} className="btn btn-sm btn-primary me-1">Edit</Link>
                                 <button onClick={() => deleteUser(user.id)} className="btn btn-sm btn-danger btn-delete-user" style={{ width: '60px' }} disabled={user.isDeleting}>
                                     {user.isDeleting
                                         ? <span className="spinner-border spinner-border-sm"></span>
