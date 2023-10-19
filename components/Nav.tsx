@@ -35,7 +35,7 @@ export function Nav(): JSX.Element | null {
                     </ul>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <NavLink className="nav-item nav-link" href="#">{`${nameStr} (${usernameStr})`}</NavLink>
+                            <NavLink className="nav-item nav-link" href="/users/profile">{`${nameStr} (${usernameStr})`}</NavLink>
                         </li>
                         <li className="nav-item">
                             <button onClick={userService.logout} className="btn btn-link nav-item nav-link justify-content-end text-right">Logout</button>
