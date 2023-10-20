@@ -23,16 +23,15 @@ export default function App({ Component, pageProps }: AppProps) {
 			setUser(userService.userValue)
 			const isToken = getCookie('jwtToken') ?? ''
 
-			const publicPaths = ['/account/login', '/account/register']
+			const publicPaths = ['/login', '/register', '/']
 			const path = url.split('?')[0]
-
 
 			if (
 				!userService.userValue && !publicPaths.includes(path) && !isToken
 			) {
 				setAuthorized(false)
 				router.push({
-					pathname: '/account/login',
+					pathname: '/login',
 					query: { returnUrl: asPath },
 				})
 			} else {

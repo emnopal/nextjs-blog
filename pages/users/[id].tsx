@@ -1,61 +1,63 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
-import { EditUser } from '@/components/users/Edit';
-import { Layout } from '@/components/users/Layout';
-import { Spinner } from '@/components/Spinner';
-import { alertHelper } from '@/lib/helper/alert';
-import { userService } from '@/services/users';
-import { stringHelper } from '@/lib/helper/stringHelper';
-import { type IUserModel } from '@/repository/users';
-
+import { EditUser } from '@/components/users/Edit'
+import { Layout } from '@/components/users/Layout'
+import { Spinner } from '@/components/Spinner'
+import { alertHelper } from '@/lib/helper/alert'
+import { userService } from '@/services/users'
+import { stringHelper } from '@/lib/helper/stringHelper'
+import { type IUserModel } from '@/repository/users'
 
 export default function Edit() {
+	const router = useRouter()
+	const { query } = router
+	const [user, setUser] = useState<IUserModel | null>(null)
+	const [isDisabled, setIsDisabled] = useState(true)
 
-    const router = useRouter();
-    const { query } = router;
-    const [user, setUser] = useState<IUserModel | null>(null);
-    const [isDisabled, setIsDisabled] = useState(true);
+	useEffect(() => {
 
-    useEffect(() => {
-        const { id, enable_edit } = query;
-        if (!id) return;
+        const { id, enable_edit } = query
 
-        if (enable_edit) setIsDisabled(false)
+		if (!id) return
 
-        // fetch user and set default form values if in edit mode
-        userService.getById(id as string)
-            .then(x => setUser(x))
-            .catch(alertHelper.error)
-    }, [query]);
+		if (enable_edit) setIsDisabled(false)
 
-    const usernameStr = user?.username ?? ''
+		userService
+			.getById(id as string)
+			.then((x) => setUser(x))
+			.catch(alertHelper.error)
+	}, [query])
 
-    // todo: implement profile
-    const origNameStr = user?.name ?? ''
-    const nameStr = stringHelper.toTitleCase(origNameStr)
+	const usernameStr = user?.username ?? ''
 
-    const setEditable = () => {
-        setIsDisabled(false);
-    };
+	// todo: implement profile
+	const origNameStr = user?.name ?? ''
+	const nameStr = stringHelper.toTitleCase(origNameStr)
 
-    const setDisabled = () => {
-        setIsDisabled(true);
-    };
+	const setEditable = () => {
+		setIsDisabled(false)
+	}
 
-    return (
-        <Layout>
-            <h1>
-                {nameStr} &nbsp;
-                {isDisabled ?
-                    <button onClick={setEditable} className="btn btn-primary btn-sm">
-                        Edit
-                    </button> : <button onClick={setDisabled} className="btn btn-warning btn-sm">
-                        Cancel
-                    </button>
-                }
-            </h1>
-            {user ? <EditUser user={user} disableForms={isDisabled} /> : <Spinner />}
-        </Layout>
-    );
+	const setDisabled = () => {
+		setIsDisabled(true)
+	}
+
+	return (
+		<Layout>
+			<h1>
+				{nameStr} &nbsp;
+				{isDisabled ? (
+					<button onClick={setEditable} className="btn btn-primary btn-sm">
+						Edit
+					</button>
+				) : (
+					<button onClick={setDisabled} className="btn btn-warning btn-sm">
+						Cancel
+					</button>
+				)}
+			</h1>
+			{user ? <EditUser user={user} disableForms={isDisabled} /> : <Spinner />}
+		</Layout>
+	)
 }
