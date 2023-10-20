@@ -1,13 +1,13 @@
-import { AddUser } from '@/components/users/Add';
-import { Layout } from '@/components/users/Layout';
+import { AddUser } from '@/components/users/Add'
+import { Layout } from '@/components/users/Layout'
 
-export default Add;
+export default Add
 
 function Add() {
-    return (
-        <Layout>
-            <h1>Add User</h1>
-            <AddUser />
-        </Layout>
-    );
+	return (
+		<Layout>
+			<h1>Add User</h1>
+			<AddUser />
+		</Layout>
+	)
 }

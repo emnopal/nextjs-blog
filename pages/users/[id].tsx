@@ -5,9 +5,9 @@ import { EditUser } from '@/components/users/Edit';
 import { Layout } from '@/components/users/Layout';
 import { Spinner } from '@/components/Spinner';
 import { alertHelper } from '@/lib/helper/alert';
-import { userService } from '@/services/usersService';
+import { userService } from '@/services/users';
 import { stringHelper } from '@/lib/helper/stringHelper';
-import { type IUserModel } from '@/repository/usersRepository';
+import { type IUserModel } from '@/repository/users';
 
 
 export default function Edit() {

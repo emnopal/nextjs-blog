@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { userService } from '@/services/usersService';
+import { userService } from '@/services/users';
 import { alertHelper } from '@/lib/helper/alert';
 import { UserValidation } from '@/lib/validation/users';
 

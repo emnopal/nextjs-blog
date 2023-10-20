@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { errorHandler } from '@/lib/handler/error'
-import { jwtMiddleware } from '@/lib/middleware/jwtMiddleware'
+import { jwtMiddleware } from '@/lib/middleware/jwt'
 
 export function apiHandler(handler: any) {
 	return async (req: NextApiRequest, res: NextApiResponse) => {

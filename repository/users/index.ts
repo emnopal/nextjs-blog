@@ -22,30 +22,30 @@ export interface ICurrentAuthUserModel {
 	username: string
 	name: string
 	email: string
-	password: string
 	role: string
 	token: string
 }
 
-interface IAuthResponse {
+export interface IAuthResponse {
 	user?: IUserModel
-	password?: string | undefined
 	token?: string
 }
 
 async function authenticate(
 	db: Db,
 	username: string,
-	password: string,
+	plainPassword: string,
 ): Promise<IAuthResponse | null> {
 	const usersCollection = db.collection<IUserModel>('users')
 	const user = await usersCollection.findOne({ username })
+	const { password, ...safeUser } = user as IUserModel
 
-	if (user && (await bcrypt.compare(password, user.password))) {
+	if (user && (await bcrypt.compare(plainPassword, password))) {
 		const token = jwt.sign({ sub: user._id }, serverRuntimeConfig.secret, {
-			expiresIn: '7d',
+			expiresIn: '5 days',
+			// expiresIn: 60,
 		})
-		return { ...user, password: undefined, token } // filtered out password
+		return { ...safeUser, token } // filtered out password
 	}
 
 	throw 'Wrong Credentials'
@@ -53,12 +53,34 @@ async function authenticate(
 
 async function getAll(db: Db): Promise<IUserModel[]> {
 	const usersCollection = db.collection<IUserModel>('users')
-	return await usersCollection.find({}).toArray()
+	return await usersCollection
+		.find({}, { projection: { password: 0 } })
+		.toArray()
 }
 
 async function getById(db: Db, id: string): Promise<IUserModel | null> {
 	const usersCollection = db.collection<IUserModel>('users')
-	return await usersCollection.findOne({ _id: new ObjectId(id) })
+	return await usersCollection
+		.findOne({ _id: new ObjectId(id) }, { projection: { password: 0 } })
+		.then((user) => user || null)
+}
+
+async function getByUsername(
+	db: Db,
+	username: string,
+): Promise<IUserModel | null> {
+	const usersCollection = db.collection<IUserModel>('users')
+	return await usersCollection
+		.findOne({ username: username }, { projection: { password: 0 } })
+		.then((user) => user || null)
+}
+
+async function getByEmail(db: Db, email: string): Promise<IUserModel | null> {
+	email = normalizeEmail(email) as string
+	const usersCollection = db.collection<IUserModel>('users')
+	return await usersCollection
+		.findOne({ email: email }, { projection: { password: 0 } })
+		.then((user) => user || null)
 }
 
 async function create(db: Db, params: IUserModel): Promise<IUserModel> {
@@ -84,7 +106,6 @@ async function update(
 	id: string,
 	params: Partial<IUserModel>,
 ): Promise<void> {
-
 	const usersCollection = db.collection<IUserModel>('users')
 	const existingUser = await usersCollection.findOne({ _id: new ObjectId(id) })
 
@@ -139,6 +160,8 @@ export const usersRepository = {
 	authenticate,
 	getAll,
 	getById,
+	getByEmail,
+	getByUsername,
 	create,
 	update,
 	updatePassword,

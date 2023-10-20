@@ -5,5 +5,5 @@ function toTitleCase(str: string) {
 }
 
 export const stringHelper = {
-    toTitleCase
+	toTitleCase,
 }

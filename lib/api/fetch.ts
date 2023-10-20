@@ -1,16 +1,30 @@
 import getConfig from 'next/config'
-
-import { userService } from '@/services/usersService'
+import { userService } from '@/services/users'
+import { getCookie } from 'cookies-next'
 
 const { publicRuntimeConfig } = getConfig()
 
 const versioningApiUrl = publicRuntimeConfig.apiUrl.v1
 
-function request(method: string) {
-	return async (url: string, body: any) => {
+interface ISetCustomHeader {
+	key: string
+	value: string
+}
 
-		const headers = new Headers(authHeader(url) as HeadersInit || {})
+function request(method: string) {
+	return async (
+		url: string,
+		body: any,
+		addedHeader: ISetCustomHeader[] | null = null,
+	) => {
+		const headers = new Headers((authHeader(url) as HeadersInit) || {})
 		let requestOptions: RequestInit = { method, headers }
+
+		if (addedHeader) {
+			addedHeader.map((header: ISetCustomHeader) => {
+				headers.set(header.key, header.value)
+			})
+		}
 
 		if (body) {
 			headers.set('Content-Type', 'application/json')
@@ -22,11 +36,10 @@ function request(method: string) {
 }
 
 function authHeader(url: string) {
-	const user = userService.userValue
-	const isLoggedIn = user?.token
+	const isLoggedIn = getCookie('jwtToken') ?? false
 	const isApiUrl = url.startsWith(versioningApiUrl)
 	if (isLoggedIn && isApiUrl) {
-		return { Authorization: `Bearer ${user.token}` }
+		return { Authorization: `Bearer ${isLoggedIn}` }
 	} else {
 		return {}
 	}

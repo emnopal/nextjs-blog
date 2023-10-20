@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { apiHandler } from '@/lib/handler/handler'
-import { usersRepository } from '@/repository/usersRepository'
+import { usersRepository } from '@/repository/users'
 import { getMongoDb } from '@/lib/config/mongo'
 
 async function getById(req: NextApiRequest, res: NextApiResponse) {
