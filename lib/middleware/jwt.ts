@@ -10,7 +10,7 @@ export function jwtMiddleware(req: NextApiRequest, res: NextApiResponse) {
 		secret: serverRuntimeConfig.secret,
 		algorithms: ['HS256'],
 	}).unless({
-		path: ['/api/v1/users/register', '/api/v1/users/authenticate'],
+		path: ['/api/v1/auth/register', '/api/v1/auth/login'],
 	})
 
 	return util.promisify(middleware)(req, res)
