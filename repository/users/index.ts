@@ -41,10 +41,18 @@ async function authenticate(
 	const { password, ...safeUser } = user as IUserModel
 
 	if (user && (await bcrypt.compare(plainPassword, password))) {
-		const token = jwt.sign({ sub: user._id }, serverRuntimeConfig.secret, {
-			expiresIn: '5 days',
-			// expiresIn: 60,
-		})
+		const token = jwt.sign(
+			{
+				id: user._id,
+				username: user.username,
+				name: user.name,
+				role: user.role,
+			},
+			serverRuntimeConfig.secret,
+			{
+				expiresIn: '5 days',
+			},
+		)
 		return { ...safeUser, token } // filtered out password
 	}
 
