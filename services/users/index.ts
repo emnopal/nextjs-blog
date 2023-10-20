@@ -8,7 +8,7 @@ import { setCookie } from 'cookies-next'
 import jwt from 'jsonwebtoken'
 
 const { publicRuntimeConfig } = getConfig()
-const baseUrl = `${publicRuntimeConfig.apiUrl.v1}/users`
+const baseUrl = `${publicRuntimeConfig.apiUrl.v1}`
 
 const userSubject = new BehaviorSubject(
 	typeof window !== 'undefined' &&
@@ -16,7 +16,7 @@ const userSubject = new BehaviorSubject(
 )
 
 async function login(username: string, password: string) {
-	const user = await fetchWrapper.POST(`${baseUrl}/authenticate`, {
+	const user = await fetchWrapper.POST(`${baseUrl}/auth/login`, {
 		username,
 		password,
 	})
@@ -46,23 +46,23 @@ function logout() {
 	localStorage.removeItem('user')
 	userSubject.next(null)
 
-	Router.push('/account/login')
+	Router.push('/')
 }
 
 async function register(user: any) {
-	await fetchWrapper.POST(`${baseUrl}/register`, user)
+	await fetchWrapper.POST(`${baseUrl}/auth/register`, user)
 }
 
 async function getAll() {
-	return await fetchWrapper.GET(baseUrl, null)
+	return await fetchWrapper.GET(`${baseUrl}/users`, null)
 }
 
 async function getById(id: string) {
-	return await fetchWrapper.GET(`${baseUrl}/${id}`, null)
+	return await fetchWrapper.GET(`${baseUrl}/users/${id}`, null)
 }
 
 async function update(id: string, params: any) {
-	await fetchWrapper.PUT(`${baseUrl}/${id}`, params)
+	await fetchWrapper.PUT(`${baseUrl}/users/${id}`, params)
 
 	if (id === userSubject.value.id) {
 		const user = { ...userSubject.value, ...params }
@@ -73,7 +73,7 @@ async function update(id: string, params: any) {
 }
 
 async function _delete(id: string) {
-	await fetchWrapper.DELETE(`${baseUrl}/${id}`, null)
+	await fetchWrapper.DELETE(`${baseUrl}/users/${id}`, null)
 
 	if (id === userSubject.value.id) {
 		logout()
