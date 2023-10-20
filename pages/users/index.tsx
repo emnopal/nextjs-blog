@@ -10,7 +10,10 @@ export default function Index() {
 	const [users, setUsers] = useState<IUserModel[] | null | undefined>(null)
 
 	useEffect(() => {
-		userService.getAll().then((x) => setUsers(x))
+
+		userService.getAll().then((x) => {
+			setUsers(x)
+		})
 	}, [])
 
 	function deleteUser(id: string) {
