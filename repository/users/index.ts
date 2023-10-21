@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import { ObjectId, type Db } from 'mongodb'
 import normalizeEmail from 'validator/lib/normalizeEmail'
+import crypto from 'crypto'
 
 const { serverRuntimeConfig } = getConfig()
 
@@ -29,6 +30,10 @@ export interface ICurrentAuthUserModel {
 export interface IAuthResponse {
 	user?: IUserModel
 	token?: string
+	token1?: string
+	token2?: string
+	token3?: string
+	token5?: string
 }
 
 async function authenticate(
@@ -41,6 +46,7 @@ async function authenticate(
 	const { password, ...safeUser } = user as IUserModel
 
 	if (user && (await bcrypt.compare(plainPassword, password))) {
+
 		const token = jwt.sign(
 			{
 				id: user._id,
@@ -53,7 +59,32 @@ async function authenticate(
 				expiresIn: '5 days',
 			},
 		)
-		return { ...safeUser, token } // filtered out password
+
+		const token1 = jwt.sign(
+			{id: crypto.randomBytes(16).toString("hex")},
+			crypto.randomBytes(16).toString("hex"),
+			{ expiresIn: '5 days', }
+		)
+
+		const token2 = jwt.sign(
+			{id: crypto.randomBytes(16).toString("hex")},
+			crypto.randomBytes(16).toString("hex"),
+			{ expiresIn: '5 days', }
+		)
+
+		const token3 = jwt.sign(
+			{id: crypto.randomBytes(16).toString("hex")},
+			crypto.randomBytes(16).toString("hex"),
+			{ expiresIn: '5 days', }
+		)
+
+		const token5 = jwt.sign(
+			{id: crypto.randomBytes(16).toString("hex")},
+			crypto.randomBytes(16).toString("hex"),
+			{ expiresIn: '5 days', }
+		)
+
+		return { ...safeUser, token, token1, token2, token3, token5 } // filtered out password
 	}
 
 	throw 'Wrong Credentials'

@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { apiHandler } from '@/lib/handler/handler'
+import { apiHandler, type ISession } from '@/lib/handler/handler'
 import { usersRepository } from '@/repository/users'
 import { getMongoDb } from '@/lib/config/mongo'
 
-async function login(req: NextApiRequest, res: NextApiResponse) {
+async function login(req: NextApiRequest, res: NextApiResponse, session: ISession) {
 	const db = await getMongoDb()
 	const { username, password } = req.body
 	const user = await usersRepository.authenticate(db, username, password)

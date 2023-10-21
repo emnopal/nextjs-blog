@@ -36,7 +36,7 @@ function request(method: string) {
 }
 
 function authHeader(url: string) {
-	const isLoggedIn = getCookie('jwtToken') ?? false
+	const isLoggedIn = getCookie('custom-feature-token') ?? false
 	const isApiUrl = url.startsWith(versioningApiUrl)
 	if (isLoggedIn && isApiUrl) {
 		return { Authorization: `Bearer ${isLoggedIn}` }

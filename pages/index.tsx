@@ -10,7 +10,7 @@ export default function Home() {
 	const [isAuthorized, setAuthorized] = useState(false)
 
 	useEffect(() => {
-		const isToken = getCookie('jwtToken') ?? ''
+		const isToken = getCookie('custom-feature-token') ?? ''
 		if (userService.userValue && isToken) {
 			setAuthorized(true)
 		}

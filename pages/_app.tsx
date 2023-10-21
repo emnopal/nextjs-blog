@@ -21,7 +21,7 @@ export default function App({ Component, pageProps }: AppProps) {
 		function authCheck(url: string) {
 
 			setUser(userService.userValue)
-			const isToken = getCookie('jwtToken') ?? ''
+			const isToken = getCookie('custom-feature-token') ?? ''
 
 			const publicPaths = ['/login', '/register', '/']
 			const path = url.split('?')[0]

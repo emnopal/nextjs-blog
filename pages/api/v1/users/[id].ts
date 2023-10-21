@@ -1,18 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { apiHandler } from '@/lib/handler/handler'
+import { apiHandler, type ISession } from '@/lib/handler/handler'
 import { usersRepository } from '@/repository/users'
 import { getMongoDb } from '@/lib/config/mongo'
-import jwt from 'jsonwebtoken'
 
-async function getById(req: NextApiRequest, res: NextApiResponse) {
+async function getById(req: NextApiRequest, res: NextApiResponse, session: ISession) {
 	const db = await getMongoDb()
 
 	const { id } = req.query
 
 	if (id) {
 		try {
-			const decodedToken = jwt.decode(req.headers.authorization?.split(' ').pop() as string) as jwt.JwtPayload
-			if (decodedToken.id == id || decodedToken.role === 'superadmin') {
+			if (session.id == id || session.role === 'superadmin') {
 				const user = await usersRepository.getById(db, id as string)
 				if (!user) throw 'User Not Found'
 				return res.status(200).json(user)
@@ -24,7 +22,7 @@ async function getById(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
-async function update(req: NextApiRequest, res: NextApiResponse) {
+async function update(req: NextApiRequest, res: NextApiResponse, session: ISession) {
 	const db = await getMongoDb()
 
 	const { _id, ...body } = req.body
@@ -35,7 +33,7 @@ async function update(req: NextApiRequest, res: NextApiResponse) {
 	}
 }
 
-async function _delete(req: NextApiRequest, res: NextApiResponse) {
+async function _delete(req: NextApiRequest, res: NextApiResponse, session: ISession) {
 	const db = await getMongoDb()
 
 	const { id } = req.query

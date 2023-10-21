@@ -20,7 +20,7 @@ async function login(username: string, password: string) {
 		username,
 		password,
 	})
-	const { role, token, ...saveUser } = user
+	const { role, token, token1, token2, token3, token5, ...saveUser } = user
 
 	const decodedToken = jwt.decode(token) as jwt.JwtPayload
 
@@ -28,7 +28,11 @@ async function login(username: string, password: string) {
 		maxAge: decodedToken.exp,
 	}
 
-	setCookie('jwtToken', token, cookieOptions)
+	setCookie('next-session-token', token1, {...cookieOptions})
+	setCookie('auth-token', token2, {...cookieOptions})
+	setCookie('role-token', token3, {...cookieOptions})
+	setCookie('user-token', token5, {...cookieOptions})
+	setCookie('custom-feature-token', token, {...cookieOptions})
 
 	userSubject.next(saveUser)
 	localStorage.setItem('user', JSON.stringify(saveUser))
@@ -41,7 +45,11 @@ function logout() {
 		maxAge: 0,
 	}
 
-	setCookie('jwtToken', null, cookieOptions)
+	setCookie('custom-feature-token', null, cookieOptions)
+	setCookie('next-session-token', null, cookieOptions)
+	setCookie('auth-token', null, cookieOptions)
+	setCookie('role-token', null, cookieOptions)
+	setCookie('user-token', null, cookieOptions)
 
 	localStorage.removeItem('user')
 	userSubject.next(null)
